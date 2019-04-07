@@ -6,11 +6,32 @@ function alertMes($mes,$url){
 	echo "<script type='text/javascript'>alert('{$mes}');location.href='{$url}';</script>";
 }
 
+// 截取文件拓展名
+function getExt($filename){
+	return strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+}
+
 // 产生唯一名称
 function getUniqidName($length=10){
 	return substr(md5(uniqid(microtime(true),true)),0,$length);
 }
 
+function createFile($filename) {
+	$pattern = "/[\/,\*,<>,\?\|]/";
+	if (! preg_match ( $pattern, basename ( $filename ) )) {
+		if (! file_exists ( $filename )) {
+			if (touch ( $filename )) {
+				return "文件创建成功";
+			} else {
+				return "文件创建失败";
+			}
+		} else {
+			return "文件已存在，请重命名后创建";
+		}
+	} else {
+		return "非法文件名";
+	}
+}
 
 function transByte($size) {
 	$arr = array ("B", "KB", "MB", "GB", "TB", "EB" );
