@@ -67,7 +67,6 @@ function downFile($filename){
 	header("content-length:".filesize($filename));
 	readfile($filename);
 }
-}
 
 
 function uploadFile($fileInfo,$path,$allowExt=array("gif","jpeg","jpg","png","txt"),$maxSize=10485760){
