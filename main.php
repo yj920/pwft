@@ -1,19 +1,13 @@
 <?php 
 
-// 提示操作信息的，并且跳转
-
+// 提示操作信息并跳转
 function alertMes($mes,$url){
 	echo "<script type='text/javascript'>alert('{$mes}');location.href='{$url}';</script>";
 }
 
-// 截取文件拓展名
+// 获取文件拓展名
 function getExt($filename){
 	return strtolower(pathinfo($filename,PATHINFO_EXTENSION));
-}
-
-// 产生唯一名称
-function getUniqidName($length=10){
-	return substr(md5(uniqid(microtime(true),true)),0,$length);
 }
 
 function createFile($filename) {
@@ -90,28 +84,20 @@ function downFile($filename){
 }
 
 
-function uploadFile($fileInfo,$path,$allowExt=array("gif","jpeg","jpg","png","txt"),$maxSize=10485760){
+function uploadFile($fileInfo,$path,$maxSize=10485760){
 	if($fileInfo['error']==UPLOAD_ERR_OK){
-		//文件是否是通过HTTP POST方式上传上来的
 		if(is_uploaded_file($fileInfo['tmp_name'])){
-			//上传文件的文件名，只允许上传jpeg|jpg、png、gif、txt的文件
-			//$allowExt=array("gif","jpeg","jpg","png","txt");
 			$ext=getExt($fileInfo['name']);
-			$uniqid=getUniqidName();
-			$destination=$path."/".pathinfo($fileInfo['name'],PATHINFO_FILENAME)."_".$uniqid.".".$ext;
-			if(in_array($ext,$allowExt)){
-				if($fileInfo['size']<=$maxSize){
-					if(move_uploaded_file($fileInfo['tmp_name'], $destination)){
-						$mes="文件上传成功";
-					}else{
-						$mes="文件移动失败";
-					}
+			$destination=$path."/".pathinfo($fileInfo['name'],PATHINFO_FILENAME).$_FILES['upFile'].".".$ext;		
+			if($fileInfo['size']<=$maxSize){
+				if(move_uploaded_file($fileInfo['tmp_name'], $destination)){
+					$mes="文件上传成功";
 				}else{
-					$mes="文件过大";
+					$mes="文件移动失败";
 				}
 			}else{
-				$mes="非法文件类型";
-			}
+				$mes="文件过大";
+			}			
 		}else{
 			$mes="文件不是通过HTTP POST方式上传上来的";
 		}

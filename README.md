@@ -14,6 +14,7 @@ $ sudo apt-get install php
 ```
 $ git clone https://github.com/yj920/pwft.git
 $ cd pwft
+$ mkdir file
 $ php -S localhost:8080
 $ firefox localhost:8080
 ```
